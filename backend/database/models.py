@@ -26,3 +26,6 @@ class UserResponse(BaseModel):
     email: str
     reviews: List[Review] = []
 
+class UserSignIn(BaseModel):
+    email: str
+    password: str

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from database.schemas import create_user, get_users, get_user, update_user, delete_user, add_review, verify_user
-from database.models import User, Review
+from database.models import User, Review, UserSignIn
 
 
 router = APIRouter(
@@ -89,8 +89,8 @@ async def new_review(email: str, review: Review):
     return {"Response": "Review added successfully"}
 
 @router.post("/signin")
-async def signin(email: str, password: str):
-    user = verify_user(email, password)
+async def signin(user: UserSignIn):
+    user = verify_user(user.email, user.password)
     if user:
         response = {
             "cname": user["cname"],
