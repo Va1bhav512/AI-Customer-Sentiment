@@ -70,7 +70,7 @@ async def new_review(email: str, review: Review):
         "created_at": review.created_at,
         "analysis": {
             "sentiment": review.analysis.sentiment,
-            "emotion": review.analysis.emotion,
+            "emotion": [],
             "keyThemes": [],
             "painPoints": [],
             "urgency": review.analysis.urgency,
@@ -84,6 +84,8 @@ async def new_review(email: str, review: Review):
         new_review["analysis"]["painPoints"].append(pain)
     for rec in review.analysis.recommendation:
         new_review["analysis"]["recommendation"].append(rec)
+    for emo in review.analysis.emotion:
+        new_review["analysis"]["emotion"].append(emo)
 
     review = add_review(email, new_review)
     return {"Response": "Review added successfully"}

@@ -7,7 +7,7 @@ class Review(BaseModel):
         created_at: str
         class AnalysisModel(BaseModel):
             sentiment: str
-            emotion: str
+            emotion: List[str]
             keyThemes: List[str]
             painPoints: List[str]
             urgency: str

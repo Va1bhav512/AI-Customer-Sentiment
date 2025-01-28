@@ -82,7 +82,6 @@ chat_session = model.start_chat(
 )
 
 
-
 @router.get("/predict")
 async def predict(input: str):
     response = chat_session.send_message(input)
