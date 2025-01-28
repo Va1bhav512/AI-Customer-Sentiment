@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from database.schemas import create_user, get_users, get_user, update_user, delete_user, get_user_videos
-from database.models import User
+from database.schemas import create_user, get_users, get_user, update_user, delete_user, add_review
+from database.models import User, Review
 
 
 router = APIRouter(
@@ -15,9 +15,9 @@ async def read_users():
     for user in users:
         print(user)
         thisResponse = {
-            "id": user["id"],
+            "cname": user["cname"],
             "email": user["email"],
-            "videos": user["videos"]
+            "reviews": user["reviews"]
         }
         response.append(thisResponse)
     return response
@@ -27,9 +27,9 @@ async def read_user(email: str):
     user = get_user(email)
     if user:
         response = {
-            "id": user["id"],
+            "cname": user["cname"],
             "email": user["email"],
-            "videos": user["videos"]
+            "reviews": user["reviews"]
         }
         return response
     raise HTTPException(status_code=404, detail="User not found")
@@ -49,16 +49,41 @@ async def delete_user_route(email: str):
     user = delete_user(email)
     return user
 
-@router.get("/{email}/videos")
-async def read_user_videos(email: str):
-    videos = get_user_videos(email)
-    response = []
-    for video in videos:
-        thisResponse = {
-            "id": video["id"],
-            "title": video["title"],
-            "url": video["url"],
-            "user_id": video["user_id"]
+# @router.get("/{email}/videos")
+# async def read_user_videos(email: str):
+#     videos = get_user_videos(email)
+#     response = []
+#     for video in videos:
+#         thisResponse = {
+#             "id": video["id"],
+#             "title": video["title"],
+#             "url": video["url"],
+#             "user_id": video["user_id"]
+#         }
+#         response.append(thisResponse)
+#     return response
+
+@router.post("/{email}/review")
+async def new_review(email: str, review: Review):
+    new_review = {
+        "content": review.content,
+        "created_at": review.created_at,
+        "analysis": {
+            "sentiment": review.analysis.sentiment,
+            "emotion": review.analysis.emotion,
+            "keyThemes": [],
+            "painPoints": [],
+            "urgency": review.analysis.urgency,
+            "recommendation": []
         }
-        response.append(thisResponse)
-    return response
+    }
+
+    for theme in review.analysis.keyThemes:
+        new_review["analysis"]["keyThemes"].append(theme)
+    for pain in review.analysis.painPoints:
+        new_review["analysis"]["painPoints"].append(pain)
+    for rec in review.analysis.recommendation:
+        new_review["analysis"]["recommendation"].append(rec)
+
+    review = add_review(email, new_review)
+    return {"Response": "Review added successfully"}

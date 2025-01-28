@@ -1,18 +1,28 @@
 from pydantic import BaseModel
 from typing import List
 
+
+class Review(BaseModel):
+        content: str
+        created_at: str
+        class AnalysisModel(BaseModel):
+            sentiment: str
+            emotion: str
+            keyThemes: List[str]
+            painPoints: List[str]
+            urgency: str
+            recommendation: List[str]
+        analysis: AnalysisModel
+
 class User(BaseModel):
-    id: str
+    cname: str
     email: str
     password: str
-    videos: List[str] = []
+    reviews: List[Review] = []
+
 
 class UserResponse(BaseModel):
-    id: str
+    cname: str
     email: str
+    reviews: List[Review] = []
 
-class Videos(BaseModel):
-    id: str
-    title: str
-    url: str
-    user_id: str
