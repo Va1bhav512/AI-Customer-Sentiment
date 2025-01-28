@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from database.schemas import create_user, get_users, get_user, update_user, delete_user, add_review
+from database.schemas import create_user, get_users, get_user, update_user, delete_user, add_review, verify_user
 from database.models import User, Review
 
 
@@ -87,3 +87,15 @@ async def new_review(email: str, review: Review):
 
     review = add_review(email, new_review)
     return {"Response": "Review added successfully"}
+
+@router.post("/signin")
+async def signin(email: str, password: str):
+    user = verify_user(email, password)
+    if user:
+        response = {
+            "cname": user["cname"],
+            "email": user["email"],
+            "reviews": user["reviews"]
+        }
+        return response
+    raise HTTPException(status_code=404, detail="User not found")

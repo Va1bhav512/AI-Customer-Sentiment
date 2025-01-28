@@ -47,3 +47,11 @@ def add_review(email, review):
     user_reviews.append(review)
     collection.update_one({"email": email}, {"$set": {"reviews": user_reviews}})
     return {"Response": "Review added successfully"}
+
+def verify_user(email, password):
+    # Verify a user's credentials
+    user = collection.find_one({"email": email, "password": password})
+    if user:
+        return user
+    else:
+        return False
