@@ -8,7 +8,7 @@ const RootLayout = () => {
 
   useEffect(() => {
     if (user && Object.keys(user).length > 0) {
-      navigate("/dashboard"); // Navigate to dashboard if user exists
+      navigate("/user/dashboard"); // Navigate to dashboard if user exists
     } else {
       navigate("/register"); // Navigate to register if user does not exist
     }
