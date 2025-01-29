@@ -4,3 +4,8 @@ matplotlib
 keras
 tensorflow
 np_utils
+yt-dlp
+assemblyai
+gradio
+transformers
+git+https://github.com/openai/whisper.git

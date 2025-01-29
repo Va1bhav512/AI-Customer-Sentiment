@@ -3,3 +3,7 @@ uvicorn
 pymongo[srv]
 google.generativeai
 python-dotenv
+# gradio
+# transformers
+# git+https://github.com/openai/whisper.git
+# imageio[ffmpeg]

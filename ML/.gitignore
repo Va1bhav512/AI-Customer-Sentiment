@@ -1,2 +1,4 @@
 venv
 fer2013.csv
+__pycache__
+webScrapping.py

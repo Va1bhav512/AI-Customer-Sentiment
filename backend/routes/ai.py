@@ -35,6 +35,13 @@ model2 = genai.GenerativeModel(
   system_instruction="I want you to act as an AI-powered customer sentiment analysis tool. Given a bunch of customer reviews, analyze it and provide the following insights:\n1. Time Series Analysis: Perform a time series analysis of the sentiment over time. Identify trends such as:\nHow sentiment fluctuates by day/week/month.\nPeaks of negative sentiment or improvement in customer feedback.\nAny correlation between sentiment changes and external events, promotions, or changes in product/service.\n2. Overall Sentiment Analysis: Determine the overall sentiment of the reviews (positive, neutral, or negative) and provide a confidence score on a scale of 0 to 1 for each review.\n3. Key Emotions and their net value from 0 to 1.\n\nGive output in this sample format:\n{\"Fluctuation\":[0.5,0.6,0.4,0.2,0.5],\n\"Overall Analysis\":\"The review was generally positive\",\n\"Key Emotions\":{\"anger\":0.5, \"happy\":0.7},\nrecommendations: [\"Gather more data: Collect more reviews over a longer period to perform a meaningful time series analysis and identify trends.\",\"Monitor reviews regularly: Track sentiment changes over time to identify and address issues promptly.\"]\n}\n",
 )
 
+model3 = genai.GenerativeModel(
+  model_name="gemini-1.5-pro",
+  generation_config=generation_config,
+  system_instruction="I have a collection of LinkedIn posts and tweets related to a particular service. Analyze the content of these posts and tweets to identify the following:\n\nSentiments: Determine whether the overall sentiment is positive, neutral, or negative. Provide an approximate percentage distribution for each category.\nEmotions: Identify the predominant emotions (e.g., happiness, frustration, admiration, anger, or disappointment) expressed in these posts. Provide examples to support your findings.\nKey Themes: Highlight the recurring themes or topics that people are discussing in relation to the service (e.g., ease of use, affordability, customer support, or innovation).\nInsights: Summarize actionable insights from the analysis. For instance, what aspects of the service are appreciated or criticized most? Are there any patterns in user feedback that can guide improvements?\n\nReturn output in this FORMAT ONLY:\n{\"Sentiments\":{\"Positive\":100,\"Neutral\":0,\"Negative\":0},\n\"Emotions\":{\"Pride\":\"The NMIT post expresses pride in its students' achievements as 0x.Day Fellows and their contributions to the platform. (We take immense pride...)\", \"Enthusiasm\":\"The tweets convey enthusiasm for 0x.Day's future and partnerships. \", \"Key Themes\": [\"Industry-Academia Collaboration: The NMIT post highlights the importance of bridging the gap between academia and the tech industry, praising 0x.Day's efforts in this area, especially with the 0xCampus Program.\",\"Student Success and Empowerment: The NMIT post focuses on the success of its students who became 0x.Day Fellows and how the platform has helped them develop their skills and prepare for the tech industry.\"], \"Insights\":[\"0x.Day's focus on industry-academia collaboration is resonating well and being seen as a valuable contribution. The 0xCampus Program appears to be a successful initiative.\",\"The platform's association with blockchain innovation and decentralized technologies is a key strength and driver of positive sentiment.\"]}",
+)
+
+
 chat_session2 = model2.start_chat(
   history=[
     {
@@ -81,6 +88,23 @@ chat_session = model.start_chat(
   ]
 )
 
+chat_session3 = model.start_chat(
+  history=[
+    {
+      "role": "user",
+      "parts": [
+        "[\"NMIT Hacks & 0xDay: Bridging Academia and Industry, Empowering Future Tech Leaders 🌐\n\nWe are delighted to announce the recent visit of Mr. Saran Kumar, founder of 0x.Day, and Mr. Naresh Shetty, Director of Operations of 0x.Day, to Nitte Meenakshi Institute of Technology. During their interaction with our Principal, Dr. HC Nagaraj . and Dr. S. Meenakshi Sundaram, Head of the Department of Computer Science and Engineering, Mr. Kumar commended our exceptional students K Sai Uttej, Karthik Rao, and Sai Shravan Motamarri for their outstanding contributions to the 0x.Day platform and conferred upon them the title of \"0x.Day Fellows.\" ✨️\n\nAs part of his visit, Mr. Saran Kumar introduced the 0xCampus Program, a groundbreaking initiative aimed at fostering deeper industry-academia collaboration. We take immense pride in the accomplishments of our \"0x.Day Fellows\", who, through their dedication and ingenuity, have significantly contributed to advancing 0x.Day - 0xHacking.com, a decentralized hackathon platform, onto the global stage.\n\nThese students showcased exceptional leadership and technical expertise, tackling challenges with innovation and precision while collaborating with industry giants such as TON Foundation and Router Protocol. Their journey exemplifies the transformative power of decentralized technologies, blockchain innovation, and industry-focused hackathons in shaping future-ready tech professionals. 🌟\n\nWe extend our heartfelt gratitude to 0x.Day, Saran Kumar, Prashanth BM, Naresh Shetty, and their dedicated team for their invaluable partnership and commitment to bridging the gap between academia and the tech industry. This collaboration has not only enhanced our students' technical and leadership skills but also prepared them to excel in the ever-evolving technology landscape. \n\nhashtag#NMIT hashtag#NMITHacks hashtag#0xDay hashtag#Hackathon hashtag#BlockchainInnovation hashtag#IndustryAcademia hashtag#FutureTechLeaders hashtag#Partnerships hashtag#TechnologyTransformation\", \"we are 0x.Day are proud to host the TON Hacker House along with Pivot. Looking forward to a great Partnership🥂\nLFG ✌️🚀\", \"Think about it. 0x.Day is nailing the revolution in the ecosystem which has been ignored for ages.\nGreat work Captains. 👏 \nSaran Kumar - BUIDL'ng 0x.Day®, Prashanth BM\nMany more to come 😀 \nhashtag#0xHacking\"]",
+      ],
+    },
+    {
+      "role": "model",
+      "parts": [
+        "```json\n{\"Sentiments\": {\"Positive\": 100, \"Neutral\": 0, \"Negative\": 0},\n\"Emotions\": {\"Pride\": \"The NMIT post expresses pride in its students' achievements as 0x.Day Fellows and their contributions to the platform. (We take immense pride...)\", \"Enthusiasm\": \"The tweets convey enthusiasm for 0x.Day's future and partnerships. (Looking forward to a great Partnership🥂 LFG ✌️🚀)\", \"Admiration\": \"The tweet praising the work of 0x.Day captains shows admiration for their efforts. (Great work Captains. 👏)\", \"Gratitude\": \"The NMIT post expresses gratitude towards 0x.Day for their partnership and commitment. (We extend our heartfelt gratitude...)\"},\n\"Key Themes\": [\"Industry-Academia Collaboration\": \"The NMIT post highlights the importance of bridging the gap between academia and the tech industry, praising 0x.Day's efforts in this area, especially with the 0xCampus Program.\", \"Student Success and Empowerment\": \"The NMIT post focuses on the success of its students who became 0x.Day Fellows and how the platform has helped them develop their skills and prepare for the tech industry.\", \"Innovation and Decentralized Technologies\": \"The posts emphasize 0x.Day's role in promoting blockchain innovation and decentralized technologies.\", \"Partnerships and Growth\": \"The tweets highlight 0x.Day's partnerships and express optimism about its future growth.\"],\n\"Insights\": [\"0x.Day's focus on industry-academia collaboration is resonating well and being seen as a valuable contribution. The 0xCampus Program appears to be a successful initiative.\", \"The platform's association with blockchain innovation and decentralized technologies is a key strength and driver of positive sentiment.\", \"Partnerships with organizations like TON Foundation and Router Protocol are viewed positively and contribute to the perception of 0x.Day as a growing and influential player in the space.\", \"Highlighting student success stories and the impact of 0x.Day on their careers can be a powerful way to further strengthen the platform's reputation and attract more talent.\"]}\n```\n",
+      ],
+    },
+  ]
+)
+
 
 @router.get("/predict")
 async def predict(input: str):
@@ -91,5 +115,11 @@ async def predict(input: str):
 @router.get("/predictOverall")
 async def predictOverall(input: str):
     response = chat_session2.send_message(input)
+    response_json = json.loads(response.text.replace("```", "").replace("json", "").replace("\n", ""))
+    return response_json
+
+@router.get("/predictLinkedIn")
+async def predictLinkedIn(input: str):
+    response = chat_session3.send_message(input)
     response_json = json.loads(response.text.replace("```", "").replace("json", "").replace("\n", ""))
     return response_json

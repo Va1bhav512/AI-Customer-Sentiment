@@ -5,12 +5,10 @@ from routes.user import router as userRouter
 from routes.ai import router as aiRouter
 from fastapi.middleware.cors import CORSMiddleware
 
-
 app = FastAPI(
-    title="Video Sharing API",
-    description="A simple API to share videos",
-    version="0.1",
-    summary="Video Sharing API"
+    title="AI Based Sentiment Analysis",
+    description="A simple API to register, login user, add reviews and perform sentiment analysis on text data",
+    version="1.0.0",
 )
 
 app.add_middleware(
